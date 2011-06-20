@@ -1,3 +1,4 @@
 module Harmonize
-  autoload :From, 'harmonize/from'
+  autoload :Base, 'harmonize/base'
 end
+ActiveRecord::Base.send :include, Harmonize::Base

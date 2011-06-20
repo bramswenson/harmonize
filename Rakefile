@@ -7,21 +7,21 @@ rescue LoadError
 end
 
 require 'rake'
-require 'rake/rdoctask'
-
 require 'rspec/core'
 require 'rspec/core/rake_task'
+require 'bundler/gem_tasks'
 
-RSpec::Core::RakeTask.new(:spec)
+namespace :test do
+  RSpec::Core::RakeTask.new(:spec)
+  desc 'Setup the test database'
+  task :dbsetup do
+    results = %x( cd spec/dummy && RAILS_ENV=test rake db:migrate )
+    puts "dbsetup: #{results}" unless results == ''
+  end
 
-task :default => :spec
-
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Harmonize'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README.rdoc')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+  desc 'Setup the test database and run rspec'
+  task :run => %w( test:dbsetup test:spec )
 end
 
-require 'bundler/gem_tasks'
+task :default => 'test:run'
+
