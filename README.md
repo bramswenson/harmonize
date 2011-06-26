@@ -1,6 +1,7 @@
 # harmonize
 
 hahr-muh-nahyz -
+
 1.  to bring into harmony,  accord, or agreement: to harmonize one's views with the new situation.
 2.  Music . to accompany with appropriate harmony.
 3.  to be in agreement in action, sense, or feeling: Though of different political parties, all the delegates harmonized on civil rights.
