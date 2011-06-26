@@ -56,7 +56,7 @@ module Harmonize
         def default_harmonizer_options(harmonizer_name)
           Harmonize::Configuration.new({
             :source => lambda{ harmonizer_source_method(harmonizer_name) },
-            :target => lambda{ find_each }
+            :target => lambda{ scoped }
           })
         end
 
