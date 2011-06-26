@@ -10,7 +10,36 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110619235339) do
+ActiveRecord::Schema.define(:version => 20110626061527) do
+
+  create_table "harmonize_logs", :force => true do |t|
+    t.string   "key"
+    t.string   "class_name"
+    t.string   "harmonizer_name"
+    t.string   "strategy"
+    t.string   "strategy_arguments"
+    t.datetime "start"
+    t.datetime "end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "harmonize_logs", ["class_name", "harmonizer_name"], :name => "index_harmonize_logs_on_class_name_and_harmonizer_name"
+
+  create_table "harmonize_modifications", :force => true do |t|
+    t.integer  "harmonize_log_id"
+    t.integer  "instance_id"
+    t.string   "modification_type"
+    t.datetime "before_time"
+    t.datetime "after_time"
+    t.text     "instance_errors"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "harmonize_modifications", ["harmonize_log_id", "instance_id", "modification_type"], :name => "index_harmonize_modification_with_id_and_type"
+  add_index "harmonize_modifications", ["harmonize_log_id", "instance_id"], :name => "index_harmonize_modification_with_id"
+  add_index "harmonize_modifications", ["harmonize_log_id"], :name => "index_harmonize_modifications_on_harmonize_log_id"
 
   create_table "widgets", :force => true do |t|
     t.string   "name"
