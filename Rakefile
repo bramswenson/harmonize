@@ -17,9 +17,7 @@ namespace :test do
   task :dbsetup do
     results = %x(
       cd spec/dummy &&
-      rm db/migrate/*create_harmonize_tables.rb &&
       rm db/*.sqlite3 &&
-      rails g harmonize:migration &&
       RAILS_ENV=test rake db:migrate
     )
     puts "dbsetup: #{results}" unless results == ''
