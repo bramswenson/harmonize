@@ -49,7 +49,7 @@ module Harmonize
 
       def destroy_targets_not_found_in_source(touched_keys)
         # if we didn't get any touched_keys, destroy everything in targets scope
-        destroy_scope = touched_keys.empty? ? targets : targets.where(harmonizer.key => !touched_keys)
+        destroy_scope = touched_keys.empty? ? targets : targets.where("#{harmonizer.key} NOT IN (?)", touched_keys)
         destroy_scope.find_each do |instance|
           modification = harmonize_log.modifications.build(
             :modification_type => 'destroy', :before_time => DateTime.now,
