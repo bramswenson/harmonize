@@ -8,4 +8,6 @@ Gem::Specification.new do |s|
   s.description = Harmonize::Gemdata::Description
   s.homepage    = Harmonize::Gemdata::Homepage
   s.files       = Dir["{app,lib,config}/**/*"] + ["MIT-LICENSE", "Rakefile", "Gemfile", "README.rdoc"]
+
+  s.add_dependency('hashie')
 end
