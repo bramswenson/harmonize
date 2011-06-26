@@ -8,5 +8,6 @@ Bring entire sets of models into harmony with external sources.
     Description = <<-END_DESCRIPTION
 Bring entire sets of models into harmony with external sources.
     END_DESCRIPTION
+    Homepage = 'http://github.com/bramswenson/harmonize'
   end
 end

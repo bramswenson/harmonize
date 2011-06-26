@@ -6,5 +6,6 @@ Gem::Specification.new do |s|
   s.version     = Harmonize::Gemdata::Version
   s.summary     = Harmonize::Gemdata::Summary
   s.description = Harmonize::Gemdata::Description
-  s.files = Dir["{app,lib,config}/**/*"] + ["MIT-LICENSE", "Rakefile", "Gemfile", "README.rdoc"]
+  s.homepage    = Harmonize::Gemdata::Homepage
+  s.files       = Dir["{app,lib,config}/**/*"] + ["MIT-LICENSE", "Rakefile", "Gemfile", "README.rdoc"]
 end
