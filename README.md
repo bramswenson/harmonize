@@ -7,7 +7,7 @@ hahr-muh-nahyz -
 3.  to be in agreement in action, sense, or feeling: Though of different political parties, all the delegates harmonized on civil rights.
 4.  to sing in harmony.
 
-harmonize is a rails 3 engine that allows one to harmonize entire sets of ActiveRecord with arbitrary external data sources.
+harmonize is a rails 3 engine that allows one to harmonize entire scopes of an ActiveRecord model with arbitrary external data sources.
 
 ## How it works
 
