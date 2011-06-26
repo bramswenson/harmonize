@@ -1,10 +1,10 @@
 # harmonize
 
 hahr-muh-nahyz -
-1. to bring into harmony,  accord, or agreement: to harmonize one's views with the new situation.
-2. Music . to accompany with appropriate harmony.
-3. to be in agreement in action, sense, or feeling: Though of different political parties, all the delegates harmonized on civil rights.
-4. to sing in harmony.
+1.  to bring into harmony,  accord, or agreement: to harmonize one's views with the new situation.
+2.  Music . to accompany with appropriate harmony.
+3.  to be in agreement in action, sense, or feeling: Though of different political parties, all the delegates harmonized on civil rights.
+4.  to sing in harmony.
 
 harmonize is a rails 3 engine that allows one to harmonize entire sets of ActiveRecord with arbitrary external data sources.
 
@@ -96,17 +96,20 @@ harmonize figures out how to use your source data to modify your target by using
 
 The default harmonize strategy is Harmonize::Strategies::BasicCrudStrategy. This strategy assumes your source data to be a "source of truth" which reflects exactly how the entire target record set should look. Here are the steps it takes to achieve harmony:
 
-1. For each record in the source, use the configured "key" to find out if a record with that key already exists.
-2. If an existing record was found in target, update it with any attributes provided by source
-3. If no existing record was found in target, create a new record with any attributes provided by source
-4. Save the record and create a Harmonize::Modification record making if we created or updated
-5. If save has errors, update the Harmonize::Modification record to reflect that and store the error messages
-6. Save the key of the modified (or errored) record in a collection
-7. After all source records have been harmonized, destory any target record with a key not in the modified keys collection
-8. Save Harmonize::Log for reporting the actions took in this harmonization
+1.  For each record in the source, use the configured "key" to find out if a record with that key already exists.
+2.  If an existing record was found in target, update it with any attributes provided by source
+3.  If no existing record was found in target, create a new record with any attributes provided by source
+4.  Save the record and create a Harmonize::Modification record making if we created or updated
+5.  If save has errors, update the Harmonize::Modification record to reflect that and store the error messages
+6.  Save the key of the modified (or errored) record in a collection
+7.  After all source records have been harmonized, destory any target record with a key not in the modified keys collection
+8.  Save Harmonize::Log for reporting the actions took in this harmonization
 
 Currently this is the only strategy provided by harmonize, but more will be added when I need them or you send them to me as a pull request.
 
+## Plans
+
+## TODO
 
 
 This project rocks and uses MIT-LICENSE.
