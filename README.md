@@ -107,8 +107,29 @@ The default harmonize strategy is Harmonize::Strategies::BasicCrudStrategy. This
 
 Currently this is the only strategy provided by harmonize, but more will be added when I need them or you send them to me as a pull request.
 
-## Plans
+## Installation
 
+Add harmonize to the gem file for your rails application:
+
+    gem 'harmonize'
+
+Run the migration generator in your rails application root:
+
+    rails generate harmonize:migration
+
+Configure your model to use harmonize and implement your source:
+
+    class MyModel < ActiveRecord::Base
+      harmonize
+
+      def self.harmonize_source_default
+        # a collection of hash like objects
+      end
+    end
+
+Use, report bugs, fix them, and send pull requests!
+
+## Plans
 
 ## TODO
 
@@ -117,6 +138,13 @@ Currently this is the only strategy provided by harmonize, but more will be adde
 ## Contributors
 
 *  Bram Swenson <bram@craniumisjar.com>
+
+## Notes
+
+Please let me know how you use harmonize!
+Thanks in advance!
+
+## License
 
 This project rocks and uses MIT-LICENSE.
 
