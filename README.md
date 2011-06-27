@@ -9,8 +9,6 @@ hahr-muh-nahyz -
 
 harmonize is a rails 3 engine that allows one to harmonize entire scopes of an ActiveRecord model with arbitrary external data sources.
 
-## How it works
-
 harmonize works by allowing one to setup feeds from external data called "sources". harmonize applies the "source" feeds to sets of ActiveRecord instances called "targets". These sets of "source" and "target" data are then handed of to a "strategy" to determine how to use the source to modify the target. When applying a "strategy" harmonize creates a Harmonize::Log which has_many Harmonize::Modifications. These records are then used to report information about the harmonize process.
 
 ## Simple Example
@@ -27,18 +25,17 @@ Lets pretend we work for a company that has a large list of stores. This list of
 
       # By default harmonize expects a class method to be implemented
       # that knows how to provide the source data feed
-      # The name of this method
       def self.harmonize_source_default
         # parse the csv file and return
         # an collection of hash like objects
       end
     end
 
-With our Store model wired up as above, we will get a new class method on our model .harmonize_default!. When we call .harmonize_default! harmonize will use the default strategy to harmonize the source with the target. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies, but first lets look at how we configure harmonize.
+With our Store model wired up as above, we will get a new class method on our model called "harmonize_default!". When we call harmonize_default! harmonize will use the default strategy to harmonize the source records with the target records. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies, but that is getting us ahead of ourselves. First lets look at how we configure harmonize.
 
 ## Harmonize::Configuration
 
-Each call to harmonize creates a Harmonize::Configuration instance that defines how to configure a harmonizer. Here is an example using all the currently available configuration options:
+Each call to harmonize creates a Harmonize::Configuration instance that defines how to configure a harmonizer. Here is an example using all the currently available configuration options using non-default settings:
 
     class Store < ActiveRecord::Base
       harmonize do |config|
@@ -57,9 +54,10 @@ Each call to harmonize creates a Harmonize::Configuration instance that defines 
 
 ### Harmonizer::Configuration.harmonizer_name
 
-harmonize allows for more than one harmonize statement to be used in a single model definition. This is possible because harmonize keeps a configuration object for each call to harmonize in a model. Essentially each harmonize is named, by default the name is "default". When defining more than one harmonize, each additional call to harmonize after the first one requires a harmonizer_name to be provided by the configuration block. harmonize uses the harmonizer_name to determine the name of the source data feed method (unless source is overridden). The same convention is used to create the harmonization method for this harmonizer. The harmonization method uses the following convention: "harmonize_#{harmonizer_name}!"
+harmonize uses the configured harmonize_name as the name of the harmonizer being configured. Each harmonize_name may only be used once. This allows the harmonize method to be called more than once per model.
 
 The default harmonizer_name is :default
+This option is used to name special methods used by harmonize. The harmonization method is named with the following convention: "harmonize\_#{harmonizer\_name}!".
 
 ### Harmonizer::Configuration.key
 
@@ -71,7 +69,8 @@ The default key is :id
 
 harmonize uses the configured source to gather the latest set of source records. This can be set to a lambda or any other callable object. The only requirement is that it returns a collection of hash like objects.
 
-The default source is a lambda. This lambda calls the default source method who's name is determined by the harmonizer_name. The convention is: "harmonizer_source_#{harmonizer_name}".
+The default source is a lambda
+This lambda calls the default source method who's name is determined by the harmonizer_name. The convention is: "harmonizer\_source\_#{harmonizer_name}".
 
 ### Harmonizer::Configuration.target
 
@@ -110,7 +109,14 @@ Currently this is the only strategy provided by harmonize, but more will be adde
 
 ## Plans
 
+
 ## TODO
 
+*  Maybe move key from Configuration to a strategy_argument as it is not a configuration option really, but a way to change stratgey behaviour.
+
+## Contributors
+
+*  Bram Swenson <bram@craniumisjar.com>
 
 This project rocks and uses MIT-LICENSE.
+
