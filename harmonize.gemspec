@@ -4,6 +4,8 @@ require 'harmonize/gemdata'
 Gem::Specification.new do |s|
   s.name        = Harmonize::Gemdata::Name
   s.version     = Harmonize::Gemdata::Version
+  s.authors     = Harmonize::Gemdata::Authors
+  s.email       = Harmonize::Gemdata::Email
   s.summary     = Harmonize::Gemdata::Summary
   s.description = Harmonize::Gemdata::Description
   s.homepage    = Harmonize::Gemdata::Homepage

@@ -2,6 +2,8 @@ module Harmonize
   module Gemdata
     Name    = 'harmonize'
     Version = '0.0.1'
+    Authors = [ 'Bram Swenson' ]
+    Email   = [ 'bram@craniumisajar.com' ]
     Summary = <<-END_SUMMARY
 Bring entire sets of models into harmony with external sources.
     END_SUMMARY
