@@ -107,7 +107,7 @@ The default harmonize strategy is Harmonize::Strategies::BasicCrudStrategy. This
 
 Currently this is the only strategy provided by harmonize, but more will be added when I need them or you send them to me as a pull request.
 
-## Installation
+## Installation and Usage
 
 Add harmonize to the gem file for your rails application:
 
@@ -126,6 +126,12 @@ Configure your model to use harmonize and implement your source:
         # a collection of hash like objects
       end
     end
+
+Bring your data into harmony
+
+    MyModel.harmonize!(:default)
+    # or the custom method named after your harmonizer
+    MyModel.harmonize_default!
 
 Use, report bugs, fix them, and send pull requests!
 
