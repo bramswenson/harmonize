@@ -142,7 +142,9 @@ Use, report bugs, fix them, and send pull requests!
 ## Notes
 
 Check out the rspec suite for more details about how harmonize works: [BasicCrudStrategy Spec](http://github.com/bramswenson/harmonize/blob/master/spec/lib/harmonize/strategies/basic_crud_strategy_spec.rb)
+
 Please let me know how you use harmonize!
+
 Thanks in advance!
 
 ## License
