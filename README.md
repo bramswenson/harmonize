@@ -9,17 +9,18 @@ hahr-muh-nahyz -
 
 harmonize is a rails 3 engine that allows one to harmonize entire scopes of an ActiveRecord model with arbitrary external data sources.
 
-harmonize works by allowing one to setup feeds from external data called "sources". harmonize applies the "source" feeds to sets of ActiveRecord instances called "targets". These sets of "source" and "target" data are then handed of to a "strategy" to determine how to use the source to modify the target. When applying a "strategy" harmonize creates a Harmonize::Log which has_many Harmonize::Modifications. These records are then used to report information about the harmonize process.
+harmonize works by allowing one to setup feeds from external data called "sources". harmonize applies the "source" feeds to sets of ActiveRecord instances called "targets". These sets of "source" and "target" data are then handed of to a "strategy" to determine how to use the source to modify the target. When applying a "strategy" harmonize creates a Harmonize::Log which has\_many Harmonize::Modifications. These records are then used to report information about the harmonize process.
 
 ## Simple Example
 
-Lets pretend we work for a company that has a large list of stores. This list of stores in maintained in a database we don't have access to directly. The database administrator wrote a script to export the data in CSV format and upload it to our application. In our application we have a Store model but we always want it to be in harmony with the latest CSV file uploaded by the administrator. Every store has a unique name and an address, and the upstream database uses the name as the primary_key.
+Lets pretend we work for a company that has a large list of stores. This list of stores in maintained in a database we don't have access to directly. The database administrator wrote a script to export the data in CSV format and upload it to our application. In our application we have a Store model but we always want it to be in harmony with the latest CSV file uploaded by the administrator. Every store has a unique name and an address, and the upstream database uses the attribute :name as the primary\_key.
 
     class Store < ActiveRecord::Base
       validates :name, :address, :presence => true
 
       # Setup a harmonizer
       harmonize do |config|
+        # use :name from the source data as the lookup key for target records
         config.key = :name
       end
 
@@ -31,7 +32,7 @@ Lets pretend we work for a company that has a large list of stores. This list of
       end
     end
 
-With our Store model wired up as above, we will get a new class method on our model called "harmonize_default!". When we call harmonize_default! harmonize will use the default strategy to harmonize the source records with the target records. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies, but that is getting us ahead of ourselves. First lets look at how we configure harmonize.
+With our Store model wired up as above, we will get a new class method on our model called "harmonize\_default!". When we call harmonize\_default! harmonize will use the default strategy to harmonize the source records with the target records. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies, but that is getting us ahead of ourselves. First lets look at how we configure harmonize.
 
 ## Harmonize::Configuration
 
@@ -41,54 +42,72 @@ Each call to harmonize creates a Harmonize::Configuration instance that defines 
       harmonize do |config|
         config.harmonizer_name    = :custom_name
         config.key                = :the_key
-        config.source             = lambda do
-          get_latest_source_data_feed!
-        end
-        config.target             = lambda do
-          where(:active => true)
-        end
+        config.source             = :get_latest_source_data_feed!
+        config.target             = :some_scope_name
         config.strategy           = YourCustomStrategy
         config.strategy_arguments = { :options => 'needed', :to => 'initialize', :your => 'custom strategy' }
       end
     end
 
-### Harmonizer::Configuration.harmonizer_name
+### Harmonizer::Configuration.harmonizer\_name
 
-harmonize uses the configured harmonize_name as the name of the harmonizer being configured. Each harmonize_name may only be used once. This allows the harmonize method to be called more than once per model.
+harmonize uses the configured harmonize\_name as the name of the harmonizer being configured. Each harmonize\_name may only be used once. This allows the harmonize method to be called more than once per model. This option is used to name special methods used by harmonize. The harmonization method is named with the following convention: "harmonize\_#{harmonizer\_name}!".
 
-The default harmonizer_name is :default
-This option is used to name special methods used by harmonize. The harmonization method is named with the following convention: "harmonize\_#{harmonizer\_name}!".
+The default setting is:
+
+    :default
+
+This setting can be any symbol.
 
 ### Harmonizer::Configuration.key
 
-harmonize uses the configured key to determine what attribute to use to find existing target records.
+harmonize uses the configured key to determine what attribute in the source data feed to use to find existing target records.
 
-The default key is :id
+The default setting is:
+
+    :id
+
+This setting can be any attribute that will be found in source records.
 
 ### Harmonizer::Configuration.source
 
-harmonize uses the configured source to gather the latest set of source records. This can be set to a lambda or any other callable object. The only requirement is that it returns a collection of hash like objects.
+harmonize uses the configured source to gather the latest set of source records. This can be set to a lambda or any other callable object. The only requirement is that it returns a collection of hash like objects. By default this setting calls a method name with the following convention: "harmonize\_source\_#{harmonizer\_name}".
 
-The default source is a lambda
-This lambda calls the default source method who's name is determined by the harmonizer_name. The convention is: "harmonizer\_source\_#{harmonizer_name}".
+The default setting is:
+
+    harmonize_source_default
+
+This setting can be any class method defined in the model that returns properly structured data.
 
 ### Harmonizer::Configuration.target
 
-harmonize uses the configured target to gather the latest set of target records. This can be set to a lambda or any other callable object. The only requirement is that it returns an ActiveRecord::Relation
+harmonize uses the configured target to gather the latest set of target records. This can be set to a lambda or any other callable object. The only requirement is that it returns an ActiveRecord::Relation. Hint, all (named) scopes return ActiveRecord::Relation instances.
 
-The default target is a lambda. This lambda returns an ActiveRecord::Relation via the ActiveRecord::Base#scoped method. Hint...all (named) scopes return ActiveRecord::Relation instances.
+The default setting is:
+
+    scoped
+
+This setting can be any class method defined in the model that returns an ActiveRecord::Relation.
 
 ### Harmonizer::Configuration.strategy
 
-harmonize uses the configured strategy to determine which Harmonize::Strategies::Strategy subclass to use when harmonizing. harmonize uses this setting as well as the strategy_arguments setting to create an instance of the Strategy subclass.
+harmonize uses the configured strategy to determine which Harmonize::Strategies::Strategy subclass to use when harmonizing. harmonize uses this setting as well as the strategy\_arguments setting to create an instance of the Strategy subclass.
 
-The default strategy is Harmonize::Strategies::BasicCrudStrategy
+The default setting is:
+
+    Harmonize::Strategies::BasicCrudStrategy
+
+This setting can be any class that returns complies with the Strategy api.
 
 ### Harmonizer::Configuration.target
 
-harmonize uses the configured strategy_arguments to determine which arguments to use when initializing the set Harmonize::Strategies::Strategy subclass.
+harmonize uses the configured strategy\_arguments to determine which arguments to use when initializing the set Harmonize::Strategies::Strategy subclass.
 
-The default strategy is {}.
+The default settings is:
+
+    {}
+
+This setting can be a hash of initialize options for the defined Strategy.
 
 ## Harmonize::Strategies
 
@@ -139,7 +158,7 @@ Use, report bugs, fix them, and send pull requests!
 
 ## TODO
 
-*  Maybe move key from Configuration to a strategy_argument as it is not a configuration option really, but a way to change stratgey behaviour.
+*  Maybe move key from Configuration to a strategy\_argument as it is not a configuration option really, but a way to change stratgey behaviour.
 
 ## Contributors
 
