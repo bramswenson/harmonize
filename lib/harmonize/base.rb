@@ -59,6 +59,14 @@ module Harmonize
           send(method_name)
         end
 
+        def harmonize_target_method(harmonizer_name, method_name = nil)
+          method_name ||= :scoped
+          raise HarmonizerTargetUndefined.new(harmonizer_name.to_s) unless respond_to?(method_name)
+          target_scope = send(method_name)
+          raise HarmonizerTargetInvalid.new(harmonizer_name.to_s) unless target_scope.is_a?(ActiveRecord::Relation)
+          target_scope
+        end
+
         def validate_harmonize_source(configuration)
           case configuration.source.class.name
           when "Proc"
@@ -72,8 +80,14 @@ module Harmonize
         end
 
         def validate_harmonize_target(configuration)
-          configuration.target = lambda { scoped } if configuration.target.nil?
-          raise HarmonizerTargetInvalid.new(harmonizer_name.to_s) unless configuration.target.call.is_a?(ActiveRecord::Relation)
+          case configuration.target.class.name
+          when "Proc"
+            configuration
+          when "Symbol"
+            configuration.target = lambda { harmonize_target_method(configuration.harmonizer_name, configuration.target) }
+          else
+            configuration.target = lambda { harmonize_target_method(configuration.harmonizer_name) }
+          end
           configuration
         end
 
