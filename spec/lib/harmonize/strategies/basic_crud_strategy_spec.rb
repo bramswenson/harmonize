@@ -343,5 +343,77 @@ describe Harmonize::Strategies::BasicCrudStrategy do
       end
 
     end
+
+    context "harmonization without changing a thing" do
+      before(:each) do
+        Widget.remove_harmonizer!
+        class Widget
+          harmonize do |config|
+            config.key = :name
+            config.source = lambda do
+              [ { :name => 'widget1', :cost_cents => 100 },
+                { :name => 'widget2', :cost_cents => 200 },
+                { :name => 'widget3', :cost_cents => 300 } ]
+            end
+          end
+        end
+        Widget.harmonize_default!
+        Widget.remove_harmonizer!
+        class Widget
+          harmonize do |config|
+            config.key = :name
+            config.source = lambda do
+              [ { :name => 'widget1', :cost_cents => 100 },
+                { :name => 'widget2', :cost_cents => 200 },
+                { :name => 'widget3', :cost_cents => 300 } ]
+            end
+          end
+        end
+      end
+
+      describe Harmonize::Log do
+        before(:each) do
+          @log = Widget.harmonize_default!
+        end
+
+        it "should create 1" do
+          @log.should be_a(Harmonize::Log)
+        end
+
+        it "should have 0 created" do
+          @log.created.count.should == 0
+        end
+
+        it "should have 0 updated" do
+          @log.updated.count.should == 0
+        end
+
+        it "should have 0 destroyed" do
+          @log.destroyed.count.should == 0
+        end
+
+        it "should have 0 errored" do
+          @log.errored.count.should == 0
+        end
+
+      end
+
+      describe Harmonize::Modification do
+
+        it "should create 0" do
+          expect { Widget.harmonize_default! }.to change(Harmonize::Modification, :count).by(0)
+        end
+
+      end
+
+      describe Widget do
+
+        it "should not have changed count since nothing changed" do
+          expect { Widget.harmonize_default! }.to change(Widget, :count).by(0)
+        end
+
+      end
+
+    end
   end
 end
