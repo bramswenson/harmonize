@@ -68,7 +68,7 @@ describe Harmonize do
 
         before(:each) do
           class Widget
-            def self.harmonizer_source_not_default
+            def self.harmonize_source_not_default
             end
           end
         end

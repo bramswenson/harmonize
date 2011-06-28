@@ -54,7 +54,7 @@ describe Harmonize do
         Widget.should respond_to(:harmonize_default!)
       end
 
-      context "harmonizer source method undefined" do
+      context "harmonize source method undefined" do
 
         it "should raise an error" do
           expect { Widget.harmonize_default! }.to raise_error(Harmonize::HarmonizerSourceUndefined)
@@ -62,11 +62,11 @@ describe Harmonize do
 
       end
 
-      context "harmonizer source method defined" do
+      context "harmonize source method defined" do
 
         before(:each) do
           class Widget
-            def self.harmonizer_source_default
+            def self.harmonize_source_default
             end
           end
         end
