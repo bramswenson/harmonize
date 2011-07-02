@@ -32,7 +32,7 @@ Lets pretend we work for a company that has a large list of stores. This list of
       end
     end
 
-With our Store model wired up as above, we will get a new class method on our model called "harmonize\_default!". When we call harmonize\_default! harmonize will use the default strategy to harmonize the source records with the target records. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies, but that is getting us ahead of ourselves. First lets look at how we configure harmonize.
+With our Store model wired up as above, we will get a new class method on our model called "harmonize\_default!". When we call harmonize\_default! harmonize will use the default strategy to harmonize the source records with the target records. In order to understand what actions are taken to bring the targets into harmony, we need to understand Harmonize::Strategies -- but we're getting ahead of ourselves. First, let's look at how to configure harmonize.
 
 ## Harmonize::Configuration
 
@@ -49,9 +49,9 @@ Each call to harmonize creates a Harmonize::Configuration instance that defines 
       end
     end
 
-### Harmonizer::Configuration.harmonizer\_name
+### Harmonize::Configuration.harmonizer\_name
 
-harmonize uses the configured harmonize\_name as the name of the harmonizer being configured. Each harmonize\_name may only be used once. This allows the harmonize method to be called more than once per model. This option is used to name special methods used by harmonize. The harmonization method is named with the following convention: "harmonize\_#{harmonizer\_name}!".
+harmonize uses the configured harmonizer\_name as the name of the harmonizer being configured. Each harmonizer\_name may only be used once. This allows the harmonize method to be called more than once per model. This option is used to name special methods used by harmonize. The harmonization method is named with the following convention: "harmonize\_#{harmonizer\_name}!".
 
 The default setting is:
 
@@ -59,7 +59,7 @@ The default setting is:
 
 This setting can be any symbol.
 
-### Harmonizer::Configuration.key
+### Harmonize::Configuration.key
 
 harmonize uses the configured key to determine what attribute in the source data feed to use to find existing target records.
 
@@ -69,7 +69,7 @@ The default setting is:
 
 This setting can be any attribute that will be found in source records.
 
-### Harmonizer::Configuration.source
+### Harmonize::Configuration.source
 
 harmonize uses the configured source to gather the latest set of source records. This can be set to a lambda or any other callable object. The only requirement is that it returns a collection of hash like objects. By default this setting calls a method name with the following convention: "harmonize\_source\_#{harmonizer\_name}".
 
@@ -79,7 +79,7 @@ The default setting is:
 
 This setting can be any class method defined in the model that returns properly structured data.
 
-### Harmonizer::Configuration.target
+### Harmonize::Configuration.target
 
 harmonize uses the configured target to gather the latest set of target records. This can be set to a lambda or any other callable object. The only requirement is that it returns an ActiveRecord::Relation. Hint, all (named) scopes return ActiveRecord::Relation instances.
 
@@ -89,7 +89,7 @@ The default setting is:
 
 This setting can be any class method defined in the model that returns an ActiveRecord::Relation.
 
-### Harmonizer::Configuration.strategy
+### Harmonize::Configuration.strategy
 
 harmonize uses the configured strategy to determine which Harmonize::Strategies::Strategy subclass to use when harmonizing. harmonize uses this setting as well as the strategy\_arguments setting to create an instance of the Strategy subclass.
 
@@ -99,7 +99,7 @@ The default setting is:
 
 This setting can be any class that returns complies with the Strategy api.
 
-### Harmonizer::Configuration.target
+### Harmonize::Configuration.target
 
 harmonize uses the configured strategy\_arguments to determine which arguments to use when initializing the set Harmonize::Strategies::Strategy subclass.
 
@@ -158,11 +158,11 @@ Use, report bugs, fix them, and send pull requests!
 
 ## TODO
 
-*  Maybe move key from Configuration to a strategy\_argument as it is not a configuration option really, but a way to change stratgey behaviour.
+*  Maybe move key from Configuration to a strategy\_argument as it is not a configuration option really, but a way to change strategy behaviour.
 
 ## Contributors
 
-*  Bram Swenson <bram@craniumisjar.com>
+*  Bram Swenson <bram@craniumisajar.com>
 
 ## Notes
 
