@@ -13,5 +13,5 @@ group :development, :test, :console do
   end
   gem 'capybara', '~> 1'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
+  gem 'factory_girl'
 end
