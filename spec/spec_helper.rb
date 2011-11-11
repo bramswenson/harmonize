@@ -1,6 +1,6 @@
 # Configure Rails Envinronment
-current_env = ENV["RAILS_ENV"]
-ENV["RAILS_ENV"] = current_env = "test" unless current_env.match /^test/
+current_env = ENV["RAILS_ENV"] || "test"
+ENV["RAILS_ENV"] = "test" unless current_env.match /^test/
 puts "ENV: #{current_env}"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
