@@ -43,14 +43,14 @@ module Harmonize
 
         def create_harmonize_log(harmonizer_name)
           harmonizer = harmonizers[harmonizer_name]
-          Harmonize::Log.create!(
+          Harmonize::Log.create!({
             :start => DateTime.now,
             :class_name => self.class.name,
             :harmonizer_name => harmonizer_name,
             :key => harmonizer.key,
             :strategy => harmonizer.strategy.inspect,
-            :strategy_arguments => harmonizer.strategy_arguments.inspect,
-          )
+            :strategy_arguments => harmonizer.strategy_arguments.inspect
+          })
         end
 
         def harmonize_source_method(harmonizer_name, method_name = nil)
