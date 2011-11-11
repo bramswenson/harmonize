@@ -17,7 +17,7 @@ namespace :test do
   task :dbsetup do
     results = %x(
       cd spec/dummy &&
-      rm db/*.sqlite3 &&
+      rm db/*.sqlite3
       RAILS_ENV=test rake db:migrate
     )
     puts "dbsetup: #{results}" unless results == ''
