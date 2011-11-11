@@ -1,5 +1,7 @@
 # Configure Rails Envinronment
-ENV["RAILS_ENV"] = "test"
+current_env = ENV["RAILS_ENV"]
+ENV["RAILS_ENV"] = current_env = "test" unless current_env.match /^test/
+puts "ENV: #{current_env}"
 
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require "rails/test_help"
@@ -18,7 +20,7 @@ Capybara.default_driver   = :rack_test
 Capybara.default_selector = :css
 
 # Run any available migration
-ActiveRecord::Migrator.migrate File.expand_path("../dummy/db/migrate/", __FILE__)
+ActiveRecord::Migrator.migrate File.expand_path("../dummy/db/migrate/", __FILE__) if defined?(ActiveRecord::Migrator)
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
