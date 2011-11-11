@@ -15,7 +15,7 @@ module Harmonize
             target_instance = find_target_instance(harmonizer.key, source[harmonizer.key])
             modification = initialize_modification(target_instance)
             modification = harmonize_target_instance!(target_instance, source, modification)
-            modification.save! if modification
+            modification.save! if modification && modification.instance_id
             keys << source[harmonizer.key]
           end
         end
@@ -42,15 +42,18 @@ module Harmonize
 
         def initialize_modification(instance)
           unless instance.new_record?
-            harmonize_log.modifications.new(:modification_type => 'update', :before_time => DateTime.now)
+            harmonize_log.modifications.build(:modification_type => 'update', :before_time => DateTime.now)
           else
-            harmonize_log.modifications.new(:modification_type => 'create', :before_time => DateTime.now)
+            harmonize_log.modifications.build(:modification_type => 'create', :before_time => DateTime.now)
           end
         end
 
         def harmonize_target_instance!(target_instance, source, modification)
           target_instance, error_message = update_target_attributes(target_instance, source)
-          return false unless (target_instance.changed? or error_message)
+          unless (target_instance.changed? or error_message)
+            modification.destroy
+            return false
+          end
           target_instance, error_message = save_target(target_instance) unless error_message
           if error_message
             modification.attributes = { :modification_type => 'error', :instance_errors => error_message }
