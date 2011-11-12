@@ -7,13 +7,19 @@ rescue LoadError
 end
 
 require 'rake'
-APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
-load    'rails/tasks/engine.rake'
+if defined?(Rails)
+  APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+  load    'rails/tasks/engine.rake'
+end
+
 require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'bundler/gem_tasks'
 
 RSpec::Core::RakeTask.new(:spec)
 
-task :default => [ 'app:db:create', 'app:db:migrate', 'spec' ]
-
+if defined?(ActiveRecord)
+  task :default => [ 'app:db:create', 'app:db:migrate', 'spec' ]
+else
+  task :default => [ 'spec' ]
+end
