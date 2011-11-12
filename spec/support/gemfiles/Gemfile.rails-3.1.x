@@ -2,7 +2,7 @@ source "http://rubygems.org"
 gemspec :path => '../../..'
 
 group :development, :test, :console do
-  gem 'rails', '~> 3.1.0'
+  gem 'rails', '~> 3.1.1'
   gem 'sqlite3'
   gem 'rspec-rails', '~> 2'
   gem 'capybara', '~> 1'

@@ -11,3 +11,4 @@ gemfile:
   - spec/support/gemfiles/Gemfile.rails-3.1.x
 env:
   - RAILS_ENV=test
+bundler_args: --without development
