@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-gemspec
+gemspec :path => '../../..'
 
 group :development, :test, :console do
   gem 'activerecord', '3.1.1', :require => 'active_record'
