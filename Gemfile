@@ -2,8 +2,9 @@ source "http://rubygems.org"
 gemspec
 
 group :development, :test, :console do
+  gem 'rails', '3.0.10'
   #gem 'rails', '3.1.1'
-  gem 'activerecord', '3.1.1', :require => 'active_record'
+  #gem 'activerecord', '3.1.1', :require => 'active_record'
   #gem 'activerecord', '3.0.10', :require => 'active_record'
   gem 'sqlite3'
   gem 'rspec-rails', '~> 2'
