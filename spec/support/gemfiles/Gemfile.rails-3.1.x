@@ -8,6 +8,7 @@ group :development, :test, :console do
   gem 'capybara', '~> 1'
   gem 'database_cleaner'
   gem 'factory_girl'
+  gem 'rake'
 end
 
 platform :mri_18 do
