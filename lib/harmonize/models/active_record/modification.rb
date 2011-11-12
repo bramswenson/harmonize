@@ -12,10 +12,10 @@ module Harmonize
         belongs_to :log, :class_name => "Harmonize::Models::ActiveRecord::Log",
                    :foreign_key => :harmonize_log_id, :inverse_of => :modifications
 
-        scope :created,   where(:modification_type => 'create')
-        scope :updated,   where(:modification_type => 'update')
-        scope :destroyed, where(:modification_type => 'destroy')
-        scope :errored,   where(:modification_type => 'error')
+        scope :created,   lambda { where(:modification_type => 'create') }
+        scope :updated,   lambda { where(:modification_type => 'update') }
+        scope :destroyed, lambda { where(:modification_type => 'destroy') }
+        scope :errored,   lambda { where(:modification_type => 'error') }
       end
     end
   end

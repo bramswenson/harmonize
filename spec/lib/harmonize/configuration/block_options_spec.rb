@@ -59,7 +59,7 @@ describe Harmonize do
       context "harmonizer source method undefined" do
 
         it "should raise an error" do
-          expect { Widget.harmonize_not_default! }.to raise_error(Harmonize::HarmonizerSourceUndefined)
+          expect{ Widget.harmonize_not_default! }.to raise_error(Harmonize::HarmonizerSourceUndefined)
         end
 
       end
@@ -74,7 +74,7 @@ describe Harmonize do
         end
 
         it "should not raise an error" do
-          expect { Widget.harmonize_not_default! }.not_to raise_error(Harmonize::HarmonizerSourceUndefined)
+          expect{ Widget.harmonize_not_default! }.to_not raise_error(Harmonize::HarmonizerSourceUndefined)
         end
 
       end

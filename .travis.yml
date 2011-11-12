@@ -8,8 +8,8 @@ rvm:
   - 1.9.3
   - ree
 gemfile:
-  - Gemfile
-  #- spec/support/gemfiles/Gemfile.rails-3.1.x
+  - spec/support/gemfiles/Gemfile.activerecord-3.1.x
+  - spec/support/gemfiles/Gemfile.activerecord-3.0.x
 env:
   - RAILS_ENV=test
 bundler_args: --without development
