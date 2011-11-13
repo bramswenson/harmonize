@@ -7,4 +7,5 @@ module Harmonize
   autoload :Strategies,    'harmonize/strategies'
   autoload :Configuration, 'harmonize/configuration'
 end
-ActiveRecord::Base.send :include, Harmonize::Base if defined?(ActiveRecord::Base)
+::ActiveRecord::Base.send :include, ::Harmonize::Base if defined?(::ActiveRecord::Base)
+::Mongoid::Document.send  :include, ::Harmonize::Base if defined?(::Mongoid::Document)

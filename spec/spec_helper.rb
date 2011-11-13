@@ -41,6 +41,15 @@ if defined?(::ActiveRecord)
   end unless defined?(Widget)
 end
 
+if defined?(::Mongoid)
+  Mongoid.database = Mongo::Connection.new.db('harmonize_test')
+  class Widget
+    include ::Mongoid::Document
+    include ::Mongoid::Timestamps
+    include ::Harmonize::Base
+  end
+end
+
 require 'database_cleaner'
 
 # Load support files

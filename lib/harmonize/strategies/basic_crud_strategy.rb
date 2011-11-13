@@ -17,7 +17,7 @@ module Harmonize
         end
 
         def destroy_targets_not_found_in_source
-          destroy_scope.find_each { |target| destroy_target(target) }
+          destroy_scope.all.each { |target| destroy_target(target) }
         end
 
         def destroy_target(target)
@@ -26,7 +26,13 @@ module Harmonize
 
         # if we didn't get any touched_keys, destroy everything in targets scope
         def destroy_scope
-          source_keys.empty? ? targets : targets.where("#{harmonizer.key} NOT IN (?)", source_keys)
+          return targets if source_keys.empty?
+          case Harmonize::Models::Orm.to_s
+          when 'ActiveRecord'
+            targets.where("#{harmonizer.key} NOT IN (?)", source_keys)
+          when 'Mongoid'
+            targets.not_in(harmonizer.key => source_keys)
+          end
         end
 
         def source_keys

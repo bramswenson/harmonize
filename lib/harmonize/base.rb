@@ -63,7 +63,13 @@ module Harmonize
           method_name ||= :scoped
           raise HarmonizerTargetUndefined.new(harmonizer_name.to_s) unless respond_to?(method_name)
           target_scope = send(method_name)
-          raise HarmonizerTargetInvalid.new(harmonizer_name.to_s) unless target_scope.is_a?(ActiveRecord::Relation)
+          if defined?(::ActiveRecord)
+            scope_base = ::ActiveRecord::Relation
+          end
+          if defined?(::Mongoid)
+            scope_base = ::Mongoid::Criteria
+          end
+          raise HarmonizerTargetInvalid.new(harmonizer_name.to_s) unless target_scope.is_a?(scope_base)
           target_scope
         end
 

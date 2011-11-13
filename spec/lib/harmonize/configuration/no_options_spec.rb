@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Harmonize do
+  before(:all) do
+    if defined?(::ActiveRecord)
+      @scope_base = ::ActiveRecord::Relation
+    else
+      @scope_base = ::Mongoid::Criteria
+    end
+  end
 
   describe ".harmonize" do
 
@@ -36,8 +43,8 @@ describe Harmonize do
         Widget.harmonizers[:default][:target].should respond_to(:call)
       end
 
-      it "should have return an ActiveRecord::Relation when target called" do
-        Widget.harmonizers[:default][:target].call.should be_a(ActiveRecord::Relation)
+      it "should have return an #{@scope_base} when target called" do
+        Widget.harmonizers[:default][:target].call.should be_a(@scope_base)
       end
 
       it "should have the default harmonizer strategy" do

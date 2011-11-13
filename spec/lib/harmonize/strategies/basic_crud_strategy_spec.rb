@@ -231,20 +231,45 @@ describe Harmonize::Strategies::BasicCrudStrategy do
           @log.should be_a(Harmonize::Log)
         end
 
-        it "should have 0 created" do
-          @log.created.count.should == 0
-        end
+        if defined?(::Mongoid)
+          context "Mongoid will not error since it has dynamic attributes" do
 
-        it "should have 0 updated" do
-          @log.updated.count.should == 0
-        end
+            it "should have 0 created" do
+              @log.created.count.should == 0
+            end
 
-        it "should have 0 destroyed" do
-          @log.destroyed.count.should == 0
-        end
+            it "should have 1 updated" do
+              @log.updated.count.should == 1
+            end
 
-        it "should have 1 errored" do
-          @log.errored.count.should == 1
+            it "should have 0 destroyed" do
+              @log.destroyed.count.should == 0
+            end
+
+            it "should have 0 errored" do
+              @log.errored.count.should == 0
+            end
+          end
+        end
+        if defined?(::ActiveRecord)
+          context "ActiveRecord will error with invalid attributes" do
+
+            it "should have 0 created" do
+              @log.created.count.should == 0
+            end
+
+            it "should have 0 updated", :wip => true do
+              @log.updated.count.should == 0
+            end
+
+            it "should have 0 destroyed" do
+              @log.destroyed.count.should == 0
+            end
+
+            it "should have 1 errored" do
+              @log.errored.count.should == 1
+            end
+          end
         end
 
       end
@@ -257,7 +282,9 @@ describe Harmonize::Strategies::BasicCrudStrategy do
 
         it "should have the error messages" do
           @log = Widget.harmonize_default!
-          @log.errored.first.instance_errors.should == 'unknown attribute: invalid_attribute'
+          if defined?(::ActiveRecord)
+            @log.errored.first.instance_errors.should == 'unknown attribute: invalid_attribute'
+          end
         end
 
       end
@@ -304,24 +331,52 @@ describe Harmonize::Strategies::BasicCrudStrategy do
           @log = Widget.harmonize_default!
         end
 
-        it "should create 1" do
-          @log.should be_a(Harmonize::Log)
+        if defined?(Mongoid)
+          context "Mongoid" do
+            it "should create 1" do
+              @log.should be_a(Harmonize::Log)
+            end
+
+            it "should have 1 created" do
+              @log.created.count.should == 1
+            end
+
+            it "should have 2 updated" do
+              @log.updated.count.should == 2
+            end
+
+            it "should have 1 destroyed" do
+              @log.destroyed.count.should == 1
+            end
+
+            it "should have 0 errored" do
+              @log.errored.count.should == 0
+            end
+          end
         end
 
-        it "should have 1 created" do
-          @log.created.count.should == 1
-        end
+        if defined?(ActiveRecord)
+          context "ActiveRecord" do
+            it "should create 1" do
+              @log.should be_a(Harmonize::Log)
+            end
 
-        it "should have 1 updated" do
-          @log.updated.count.should == 1
-        end
+            it "should have 1 created" do
+              @log.created.count.should == 1
+            end
 
-        it "should have 1 destroyed" do
-          @log.destroyed.count.should == 1
-        end
+            it "should have 1 updated" do
+              @log.updated.count.should == 1
+            end
 
-        it "should have 1 errored" do
-          @log.errored.count.should == 1
+            it "should have 1 destroyed" do
+              @log.destroyed.count.should == 1
+            end
+
+            it "should have 1 errored" do
+              @log.errored.count.should == 1
+            end
+          end
         end
 
       end
