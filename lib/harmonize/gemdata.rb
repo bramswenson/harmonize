@@ -1,7 +1,7 @@
 module Harmonize
   module Gemdata
     Name    = 'harmonize'
-    Version = '0.0.2'
+    Version = '0.0.3'
     Authors = [ 'Bram Swenson' ]
     Email   = [ 'bram@craniumisajar.com' ]
     Summary = <<-END_SUMMARY
