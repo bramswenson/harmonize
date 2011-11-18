@@ -95,7 +95,7 @@ module Harmonize
             @before = DateTime.now
             yield
             @after  = DateTime.now
-          rescue model_errors => e
+          rescue *model_errors => e
             @error = e.message
           ensure
             if @error
