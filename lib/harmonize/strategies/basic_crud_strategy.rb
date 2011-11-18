@@ -95,7 +95,7 @@ module Harmonize
             @before = DateTime.now
             yield
             @after  = DateTime.now
-          rescue ActiveRecord::UnknownAttributeError, ActiveRecord::ActiveRecordError => e
+          rescue model_errors => e
             @error = e.message
           ensure
             if @error
@@ -103,6 +103,11 @@ module Harmonize
               @after = nil
             end
             create_log_entry if @modified || @error
+          end
+
+          def model_errors
+            return [ ActiveRecord::UnknownAttributeError, ActiveRecord::ActiveRecordError ] if defined?(::ActiveRecord)
+            return [ Mongoid::MongoidError ] if defined?(::ActiveRecord)
           end
 
           def create_log_entry
